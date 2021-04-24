@@ -18,6 +18,24 @@ export default function Dashboard() {
     history.push("/auth")
   }
 
+  async function getFile(url) {
+    let response = await fetch(url);
+    let data = await response.blob();
+    return new File([data], "test.jpg", { type: 'image/jpeg' });
+  }
+
+  function postUser(data) {
+    axios.post(
+      'https://api.chatengine.io/users/',
+      data,
+      { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
+    )
+    
+    .then(() => setLoading(false))
+
+    .catch(e => console.log('e', e.response))
+  }
+
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true
@@ -34,15 +52,22 @@ export default function Dashboard() {
       .then(() => setLoading(false))
 
       .catch(e => {
-        axios.post(
-          'https://api.chatengine.io/users/',
-          { "email": currentUser.email, "username": currentUser.email, "secret": currentUser.uid },
-          { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
-        )
-        
-        .then(() => setLoading(false))
+        let formdata = new FormData()
+        formdata.append('email', currentUser.email)
+        formdata.append('username', currentUser.email)
+        formdata.append('secret', currentUser.uid)
 
-        .catch(e => console.log('e', e.response))
+        if (currentUser.photoURL) {
+          getFile(currentUser.photoURL)
+
+          .then(avatar => {
+            formdata.append('avatar', avatar, avatar.name)
+            postUser(formdata)
+          })     
+
+        } else {
+          postUser(formdata)
+        }
       })
     }
   }, [currentUser])
