@@ -35,13 +35,13 @@ export default function Dashboard() {
       .catch(e => {
         axios.post(
           'https://api.chatengine.io/users/',
-          { headers: { "private-key": 'redacted' }},
-          { data: { "email": currentUser.email, "username": currentUser.email, "secret": currentUser.uid }}
+          { "email": currentUser.email, "username": currentUser.email, "secret": currentUser.uid },
+          { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
         )
         
         .then(r => console.log('r', r))
 
-        .catch(e => console.log('e', e))
+        .catch(e => console.log('e', e.response))
       })
     }
   }, [currentUser])
