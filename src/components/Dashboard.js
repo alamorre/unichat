@@ -1,14 +1,15 @@
-import React, { useRef, useEffect } from "react"
-import { Button } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
-import { useHistory } from "react-router-dom"
+import React, { useRef, useState, useEffect } from "react"
 
 import axios from 'axios'
+import { useHistory } from "react-router-dom"
+import { ChatEngine } from 'react-chat-engine'
 
+import { useAuth } from "../contexts/AuthContext"
 import { auth } from "../firebase"
 
 export default function Dashboard() {
   const didMountRef = useRef(false)
+  const [loading, setLoading] = useState(true)
   const { currentUser } = useAuth()
   const history = useHistory()
 
@@ -30,7 +31,7 @@ export default function Dashboard() {
         }}
       )
 
-      .then(() => {})
+      .then(() => setLoading(false))
 
       .catch(e => {
         axios.post(
@@ -39,20 +40,30 @@ export default function Dashboard() {
           { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
         )
         
-        .then(r => console.log('r', r))
+        .then(() => setLoading(false))
 
         .catch(e => console.log('e', e.response))
       })
     }
   }, [currentUser])
 
+  if (loading) return <div>Loading...</div>
+
   return (
-    <>
-      <div className="w-100 text-center mt-2">
-        <Button variant="link" onClick={handleLogout}>
-          Log Out
-        </Button>
-      </div>
-    </>
+    <div style={{ width: '100vw', height: '100vh', position: 'absolute', top: '0px' }}>
+      <ChatEngine 
+        height='100vh'
+        projectID='784bdb9e-8724-4f63-8ab6-3c10d59f74a7'
+        userName={currentUser.email}
+        userSecret={currentUser.uid}
+      />
+
+      <button 
+        onClick={handleLogout} 
+        style={{ position: 'absolute', bottom: '4px', right: '12px' }}
+      >
+        Logout
+      </button>
+    </div>
   )
 }
