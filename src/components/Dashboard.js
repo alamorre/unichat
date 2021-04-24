@@ -3,6 +3,8 @@ import { Button } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import { useHistory } from "react-router-dom"
 
+import axios from 'axios'
+
 import { auth } from "../firebase"
 
 export default function Dashboard() {
@@ -18,13 +20,26 @@ export default function Dashboard() {
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true
-
-      const userName = currentUser.email
-      const userEmail = userName
-      const userAvatar = currentUser.photoURL
-      const userSecret = currentUser.uid
       
-      console.log(userName, userEmail, userAvatar, userSecret)
+      axios.get(
+        'https://api.chatengine.io/users/me/',
+        { headers: { 
+          "project-id": '784bdb9e-8724-4f63-8ab6-3c10d59f74a7',
+          "user-name": currentUser.email,
+          "user-secret": currentUser.uid
+        }}
+      )
+
+      .then(() => {})
+
+      .catch(e => {
+        axios.post(
+          'https://api.chatengine.io/users/',
+          { headers: { "private-key": 'redacted' }},
+          { data: { "email": currentUser.email, "username": currentUser.email, "secret": currentUser.uid }}
+        )
+        .then(r => console.log('r', r))
+      })
     }
   }, [currentUser])
 
