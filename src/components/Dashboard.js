@@ -21,7 +21,7 @@ export default function Dashboard() {
     if (!didMountRef.current) {
       didMountRef.current = true
       
-      axios.get(
+      axios.get(    // Does user exist?
         'https://api.chatengine.io/users/me/',
         { headers: { 
           "project-id": '784bdb9e-8724-4f63-8ab6-3c10d59f74a7',
@@ -30,10 +30,10 @@ export default function Dashboard() {
         }}
       )
 
-      .then(() => {})
+      .then(() => {}) // If so, do nothing
 
       .catch(e => {
-        axios.post(
+        axios.post(   // If no, create one
           'https://api.chatengine.io/users/',
           { headers: { "private-key": 'redacted' }},
           { data: { "email": currentUser.email, "username": currentUser.email, "secret": currentUser.uid }}
