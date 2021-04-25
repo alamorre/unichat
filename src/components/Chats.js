@@ -77,20 +77,26 @@ export default function Chats() {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'absolute', top: '0px' }}>
+    <div style={{ position: 'absolute', top: '0px', left: '0px', width: '100vw', height: '100vh' }}>
+      <div style={{ width: '100%', height: '66px', backgroundColor: '#1890ff' }}>
+        <div style={{ position: 'absolute', left: '22px', top: '12px', fontSize: '32px', fontWeight: '700', color: 'white' }}>
+          Unichat
+        </div>
+
+        <div 
+          onClick={handleLogout} 
+          style={{ position: 'absolute', top: '22px', right: '22px', color: 'white', cursor: 'pointer' }}
+        >
+          Logout
+        </div>
+      </div>
+
       <ChatEngine 
-        height='100vh'
+        height='calc(100vh - 66px)'
         projectID='784bdb9e-8724-4f63-8ab6-3c10d59f74a7'
         userName={currentUser.email}
         userSecret={currentUser.uid}
       />
-
-      <button 
-        onClick={handleLogout} 
-        style={{ position: 'absolute', bottom: '4px', right: '12px' }}
-      >
-        Logout
-      </button>
     </div>
   )
 }
