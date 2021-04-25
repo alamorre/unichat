@@ -15,6 +15,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const history = useHistory()
 
+  function login(provider) { return auth.signInWithRedirect(provider) }
+
   function logout() { return auth.signOut() }
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    login,
     logout,
   }
 

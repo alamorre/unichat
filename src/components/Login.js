@@ -4,16 +4,13 @@ import firebase from "firebase/app"
 
 import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
 
+import { useAuth } from "../contexts/AuthContext"
+
 export default function Login() {
-  function googleLogin() {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    return firebase.auth().signInWithRedirect(provider)
-  }
+  const { login } = useAuth()
   
-  function facebookLogin() {
-    var provider = new firebase.auth.FacebookAuthProvider();
-    return firebase.auth().signInWithRedirect(provider)
-  }
+  function googleLogin() { login(new firebase.auth.GoogleAuthProvider()) }
+  function facebookLogin() { login(new firebase.auth.FacebookAuthProvider()) }
 
   return (
     <div>
