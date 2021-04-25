@@ -12,7 +12,6 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
-  const [loading, setLoading] = useState(true)
   const history = useHistory()
 
   function login(provider) { return auth.signInWithRedirect(provider) }
@@ -22,7 +21,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
-      setLoading(false)
       history.push('/')
     })
     return unsubscribe
@@ -36,7 +34,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      { children }
     </AuthContext.Provider>
   )
 }

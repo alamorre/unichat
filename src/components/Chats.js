@@ -7,7 +7,7 @@ import { ChatEngine } from 'react-chat-engine'
 import { useAuth } from "../contexts/AuthContext"
 import { auth } from "../firebase"
 
-export default function Dashboard() {
+export default function Chats() {
   const didMountRef = useRef(false)
   const [loading, setLoading] = useState(true)
   const { currentUser } = useAuth()
@@ -39,6 +39,11 @@ export default function Dashboard() {
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true
+
+      if (!currentUser || currentUser === null) {
+        history.push('/auth')
+        return
+      }
       
       axios.get(
         'https://api.chatengine.io/users/me/',
@@ -57,20 +62,17 @@ export default function Dashboard() {
         formdata.append('username', currentUser.email)
         formdata.append('secret', currentUser.uid)
 
-        if (currentUser.photoURL) {
-          getFile(currentUser.photoURL)
+        getFile(currentUser.photoURL)
 
-          .then(avatar => {
-            formdata.append('avatar', avatar, avatar.name)
-            postUser(formdata)
-          })     
-
-        } else {
+        .then(avatar => {
+          formdata.append('avatar', avatar, avatar.name)
           postUser(formdata)
-        }
+        })
       })
     }
-  }, [currentUser])
+  }, [currentUser, history])
+
+  if (!currentUser) return <div />
 
   if (loading) return <div>Loading...</div>
 
