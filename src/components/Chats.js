@@ -5,16 +5,15 @@ import { useHistory } from "react-router-dom"
 import { ChatEngine } from 'react-chat-engine'
 
 import { useAuth } from "../contexts/AuthContext"
-import { auth } from "../firebase"
 
 export default function Chats() {
   const didMountRef = useRef(false)
-  const [loading, setLoading] = useState(true)
-  const { currentUser } = useAuth()
+  const [ loading, setLoading ] = useState(true)
+  const { currentUser, logout } = useAuth()
   const history = useHistory()
 
   async function handleLogout() {
-    await auth.signOut()
+    await logout()
     history.push("/auth")
   }
 
@@ -30,9 +29,7 @@ export default function Chats() {
       data,
       { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
     )
-    
     .then(() => setLoading(false))
-
     .catch(e => console.log('e', e.response))
   }
 
@@ -63,7 +60,6 @@ export default function Chats() {
         formdata.append('secret', currentUser.uid)
 
         getFile(currentUser.photoURL)
-
         .then(avatar => {
           formdata.append('avatar', avatar, avatar.name)
           postUser(formdata)
