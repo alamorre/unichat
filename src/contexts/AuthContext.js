@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 
 import { auth } from "../firebase"
+import firebase from "firebase/app"
 
 const AuthContext = React.createContext()
 
@@ -14,21 +15,27 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const history = useHistory()
 
-  function login(provider) { return auth.signInWithRedirect(provider) }
+  function facebookLogin() { 
+    return auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider()) 
+  }
+
+  function googleLogin() { 
+    return auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()) 
+  }
 
   function logout() { return auth.signOut() }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged(user => {
       setCurrentUser(user)
       history.push('/')
     })
-    return unsubscribe
   }, [currentUser, history])
 
   const value = {
     currentUser,
-    login,
+    googleLogin,
+    facebookLogin,
     logout,
   }
 

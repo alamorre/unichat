@@ -14,7 +14,7 @@ export default function Chats() {
 
   async function handleLogout() {
     await logout()
-    history.push("/auth")
+    history.push("/login")
   }
 
   async function getFile(url) {
@@ -38,7 +38,7 @@ export default function Chats() {
       didMountRef.current = true
 
       if (!currentUser || currentUser === null) {
-        history.push('/auth')
+        history.push("/login")
         return
       }
       

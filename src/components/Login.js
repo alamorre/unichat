@@ -1,12 +1,11 @@
 import React from "react"
 
-import firebase from "firebase/app"
 import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
 
 import { useAuth } from "../contexts/AuthContext"
 
 export default function Login() {
-  const { login } = useAuth()
+  const { facebookLogin, googleLogin } = useAuth()
 
   return (
     <div>
@@ -14,7 +13,7 @@ export default function Login() {
 
       <div
         className='login-button'
-        onClick={() => login(new firebase.auth.GoogleAuthProvider())}
+        onClick={() => googleLogin()}
       >
         <GoogleOutlined /> Sign In with Google
       </div>
@@ -23,7 +22,7 @@ export default function Login() {
 
       <div
         className='login-button'
-        onClick={() => login(new firebase.auth.FacebookAuthProvider())}
+        onClick={() => facebookLogin()}
       >
         <FacebookOutlined /> Sign In with Facebook
       </div>
