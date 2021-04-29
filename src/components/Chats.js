@@ -73,16 +73,13 @@ export default function Chats() {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div style={{ position: 'absolute', top: '0px', left: '0px', width: '100vw', height: '100vh' }}>
-      <div style={{ width: '100%', height: '66px', backgroundColor: '#002766' }}>
-        <div style={{ position: 'absolute', left: '22px', top: '12px', fontSize: '32px', fontWeight: '700', color: 'white' }}>
+    <div className='chats-page'>
+      <div className='nav-bar'>
+        <div className='logo-tab'>
           Unichat
         </div>
 
-        <div 
-          onClick={handleLogout} 
-          style={{ position: 'absolute', top: '22px', right: '22px', color: 'white', cursor: 'pointer' }}
-        >
+        <div onClick={handleLogout} className='logout-tab'>
           Logout
         </div>
       </div>
