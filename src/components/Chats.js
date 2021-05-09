@@ -23,6 +23,8 @@ export default function Chats() {
     return new File([data], "test.jpg", { type: 'image/jpeg' });
   }
 
+  // Should be in a Firebase Function
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   function postUser(data) {
     axios.post(
       'https://api.chatengine.io/users/',
@@ -67,6 +69,7 @@ export default function Chats() {
       })
     }
   }, [currentUser, history])
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   if (!currentUser) return <div />
 
