@@ -1,6 +1,5 @@
 import React from "react"
 
-import PrivateRoute from "./PrivateRoute"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 import { AuthProvider } from "../contexts/AuthContext"
@@ -14,8 +13,8 @@ function App() {
       <Router>
         <AuthProvider>
           <Switch>
-            <PrivateRoute exact path="/" component={Chats} />
             <Route path="/login" component={Login} />
+            <Route path="/" component={Chats} />
           </Switch>
         </AuthProvider>
       </Router>
