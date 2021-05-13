@@ -12,7 +12,7 @@ export function useAuth() { return useContext(AuthContext) }
 
 export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
-  const [currentUser, setCurrentUser] = useState()
+  const [user, setUser] = useState()
   const history = useHistory()
 
   function facebookLogin() { 
@@ -27,14 +27,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     auth.onAuthStateChanged(user => {
-      setCurrentUser(user)
+      setUser(user)
       setLoading(false)
       history.push('/chats')
     })
-  }, [currentUser, history])
+  }, [user, history])
 
   const value = {
-    currentUser,
+    user,
     googleLogin,
     facebookLogin,
     logout,
