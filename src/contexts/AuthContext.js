@@ -2,14 +2,13 @@ import React, { useContext, useState, useEffect } from "react"
 
 import { useHistory } from "react-router-dom"
 
-import { auth } from "../firebase"
 import firebase from "firebase/app"
+
+import { auth } from "../firebase"
 
 const AuthContext = React.createContext()
 
-export function useAuth() {
-  return useContext(AuthContext)
-}
+export function useAuth() { return useContext(AuthContext) }
 
 export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
@@ -30,7 +29,7 @@ export function AuthProvider({ children }) {
     auth.onAuthStateChanged(user => {
       setCurrentUser(user)
       setLoading(false)
-      history.push('/')
+      history.push('/chats')
     })
   }, [currentUser, history])
 

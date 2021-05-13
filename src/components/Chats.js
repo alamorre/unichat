@@ -14,7 +14,7 @@ export default function Chats() {
 
   async function handleLogout() {
     await logout()
-    history.push("/login")
+    history.push("/")
   }
 
   async function getFile(url) {
@@ -23,27 +23,16 @@ export default function Chats() {
     return new File([data], "test.jpg", { type: 'image/jpeg' });
   }
 
-  // Should be in a Firebase Function
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  function postUser(data) {
-    axios.post(
-      'https://api.chatengine.io/users/',
-      data,
-      { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
-    )
-    .then(() => setLoading(false))
-    .catch(e => console.log('e', e.response))
-  }
-
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true
 
       if (!currentUser || currentUser === null) {
-        history.push("/login")
+        history.push("/")
         return
       }
       
+      // Get-or-Create should be in a Firebase Function
       axios.get(
         'https://api.chatengine.io/users/me/',
         { headers: { 
@@ -64,12 +53,21 @@ export default function Chats() {
         getFile(currentUser.photoURL)
         .then(avatar => {
           formdata.append('avatar', avatar, avatar.name)
-          postUser(formdata)
+
+          axios.post(
+            'https://api.chatengine.io/users/',
+            formdata,
+            { headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY }}
+          )
+          .then(() => setLoading(false))
+          .catch(e => console.log('e', e.response))
         })
       })
+      // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     }
   }, [currentUser, history])
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
 
   if (!currentUser || loading) return <div />
 
