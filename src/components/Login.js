@@ -2,10 +2,14 @@ import React from "react"
 
 import { GoogleOutlined, FacebookOutlined, LoadingOutlined } from '@ant-design/icons'
 
+import firebase from "firebase/app"
+
 import { useAuth } from "../contexts/AuthContext"
 
+import { auth } from "../firebase"
+
 export default function Login() {
-  const { loading, facebookLogin, googleLogin } = useAuth()
+  const { loading } = useAuth()
 
   return (
     <div id='login-page'>
@@ -14,16 +18,16 @@ export default function Login() {
 
         <div
           className='login-button google'
-          onClick={() => googleLogin()}
+          onClick={() => auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}
         >
           <GoogleOutlined /> Sign In with Google
         </div>
 
-        <br /> <br />
+        <br/><br/>
 
         <div
           className='login-button facebook'
-          onClick={() => facebookLogin()}
+          onClick={() => auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider()) }
         >
           <FacebookOutlined /> Sign In with Facebook
         </div>

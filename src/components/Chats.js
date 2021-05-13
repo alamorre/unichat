@@ -6,14 +6,16 @@ import { ChatEngine } from 'react-chat-engine'
 
 import { useAuth } from "../contexts/AuthContext"
 
+import { auth } from "../firebase"
+
 export default function Chats() {
   const didMountRef = useRef(false)
   const [ loading, setLoading ] = useState(true)
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const history = useHistory()
 
   async function handleLogout() {
-    await logout()
+    await auth.signOut()
     history.push("/")
   }
 
