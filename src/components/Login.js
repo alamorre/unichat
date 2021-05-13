@@ -1,31 +1,40 @@
 import React from "react"
 
-import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
+import { GoogleOutlined, FacebookOutlined, LoadingOutlined } from '@ant-design/icons'
 
 import { useAuth } from "../contexts/AuthContext"
 
 export default function Login() {
-  const { facebookLogin, googleLogin } = useAuth()
+  const { loading, facebookLogin, googleLogin } = useAuth()
 
   return (
-    <div>
-      <h2>Welcome</h2>
+    <div id='login-page'>
+      <div id='login-card'>
+        <h2>Welcome to Unichat!</h2>
 
-      <div
-        className='login-button'
-        onClick={() => googleLogin()}
-      >
-        <GoogleOutlined /> Sign In with Google
+        <div
+          className='login-button google'
+          onClick={() => googleLogin()}
+        >
+          <GoogleOutlined /> Sign In with Google
+        </div>
+
+        <br /> <br />
+
+        <div
+          className='login-button facebook'
+          onClick={() => facebookLogin()}
+        >
+          <FacebookOutlined /> Sign In with Facebook
+        </div>
       </div>
 
-      <br /> <br />
-
-      <div
-        className='login-button'
-        onClick={() => facebookLogin()}
-      >
-        <FacebookOutlined /> Sign In with Facebook
-      </div>
+      { 
+        loading && 
+        <div id='loading-container'>
+          <LoadingOutlined id='loading-icon' /> 
+        </div>
+      }
     </div>
   )
 }

@@ -71,9 +71,7 @@ export default function Chats() {
   }, [currentUser, history])
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  if (!currentUser) return <div />
-
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div />
 
   return (
     <div className='chats-page'>

@@ -12,6 +12,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+  const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState()
   const history = useHistory()
 
@@ -28,6 +29,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     auth.onAuthStateChanged(user => {
       setCurrentUser(user)
+      setLoading(false)
       history.push('/')
     })
   }, [currentUser, history])
@@ -41,7 +43,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      { children }
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
