@@ -1,12 +1,12 @@
 import React from "react"
 
-import { GoogleOutlined, FacebookOutlined, LoadingOutlined } from '@ant-design/icons'
+import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
 
-import { useAuth } from "../contexts/AuthContext"
+import firebase from "firebase/app"
+
+import { auth } from "../firebase"
 
 export default function Login() {
-  const { loading, facebookLogin, googleLogin } = useAuth()
-
   return (
     <div id='login-page'>
       <div id='login-card'>
@@ -14,27 +14,20 @@ export default function Login() {
 
         <div
           className='login-button google'
-          onClick={() => googleLogin()}
+          onClick={() => auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}
         >
           <GoogleOutlined /> Sign In with Google
         </div>
 
-        <br /> <br />
+        <br/><br/>
 
         <div
           className='login-button facebook'
-          onClick={() => facebookLogin()}
+          onClick={() => auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider()) }
         >
           <FacebookOutlined /> Sign In with Facebook
         </div>
       </div>
-
-      { 
-        loading && 
-        <div id='loading-container'>
-          <LoadingOutlined id='loading-icon' /> 
-        </div>
-      }
     </div>
   )
 }
