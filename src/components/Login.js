@@ -1,16 +1,12 @@
 import React from "react"
 
-import { GoogleOutlined, FacebookOutlined, LoadingOutlined } from '@ant-design/icons'
+import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
 
 import firebase from "firebase/app"
-
-import { useAuth } from "../contexts/AuthContext"
 
 import { auth } from "../firebase"
 
 export default function Login() {
-  const { loading } = useAuth()
-
   return (
     <div id='login-page'>
       <div id='login-card'>
@@ -32,13 +28,6 @@ export default function Login() {
           <FacebookOutlined /> Sign In with Facebook
         </div>
       </div>
-
-      { 
-        loading && 
-        <div id='loading-container'>
-          <LoadingOutlined id='loading-icon' /> 
-        </div>
-      }
     </div>
   )
 }
